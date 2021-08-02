@@ -1,5 +1,6 @@
 package AddressBookWorkShop;
 
+
 public class Contacts 
 {
     private String firstName;
@@ -36,7 +37,7 @@ public class Contacts
 	}
 
 
-	public String getLastName()
+	public String getLastName() 
 	{
 		return lastName;
 	}
@@ -48,7 +49,7 @@ public class Contacts
 	}
 
 
-	public String getAddress()
+	public String getAddress() 
 	{
 		return address;
 	}
@@ -72,13 +73,13 @@ public class Contacts
 	}
 
 
-	public String getState() 
+	public String getState()
 	{
 		return state;
 	}
 
 
-	public void setState(String state) 
+	public void setState(String state)
 	{
 		this.state = state;
 	}
@@ -114,7 +115,8 @@ public class Contacts
 	}
 
 
-	public void setEmailId(String emailId) {
+	public void setEmailId(String emailId)
+	{
 		this.emailId = emailId;
 	}
 
@@ -125,6 +127,6 @@ public class Contacts
 		return "Contacts [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city=" + city
 				+ ", state=" + state + ", zip=" + zip + ", PhoneNumber=" + PhoneNumber + ", emailId=" + emailId + "]";
 	}
-}
 
     
+}
