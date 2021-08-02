@@ -1,5 +1,6 @@
 package AddressBookWorkShop;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -90,6 +91,19 @@ public class AddressBookService
             }
         }
         System.out.println("Contact Edited Successfully");
+    }
+    
+    public void deleteContact(String name)
+    {
+        for (int i = 0; i < contactlist.size(); i++) 
+        {
+            if (contactlist.get(i).getFirstName().equals(name)) 
+            {
+                Contact contact = contactlist.get(i);
+                contactlist.remove(contact);
+            }
+        }
+        System.out.println("Contact Deleted Successfully");
     }
     public void displayList() 
     {
