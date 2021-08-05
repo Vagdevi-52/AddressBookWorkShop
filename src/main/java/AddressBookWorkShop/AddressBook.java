@@ -9,7 +9,8 @@ public class AddressBook
 {
     static Scanner scanner = new Scanner(System.in);
     ArrayList<Contact> contactlist = new ArrayList<>();
-    private Map<String, ArrayList<Contact>> AddressBookMain = new HashMap<>();
+    private Map<String, ArrayList<Contact>> addressbook = new HashMap<>();
+	private Object contact;
 
     public void addNewContact()
     {
@@ -41,7 +42,7 @@ public class AddressBook
         
         System.out.println("Enter Book name to which you have to add contact");
         String bookName  = scanner.next();
-        if(AddressBookMain.containsKey(bookName))
+        if(addressbook.containsKey(bookName))
         {
         	    contactlist.stream().filter(value -> value.getFirstname(). equals(contact.getFirstname())).forEach(value -> 
         	    {
@@ -49,17 +50,17 @@ public class AddressBook
         	    	addNewContact();
         	    });
         	contactlist.add(contact);
-            AddressBookMain.put(bookName,contactlist);
+            addressbook.put(bookName,contactlist);
             System.out.println("New Contact Has Been Added Successfully");
         }
         else
         {
             contactlist.add(contact);
-            AddressBookMain.put(bookName,contactlist);
+            addressbook.put(bookName,contactlist);
             System.out.println("New AddressBook is created and Added Contact in the AddressBook Successfully");
         }
     }
-    public void editContact() //edit contact.
+    public void editContact()
     {
         String enteredFirstName;
         System.out.println("Enter First name of contact to edit it ");
@@ -124,6 +125,16 @@ public class AddressBook
             }
         }
         System.out.println("Contact Deleted Successfully");
+    }
+    
+    public void searchaPersoninaCity (String city)
+    {
+        System.out.println("following are the persons who belongs to :" + city);
+        for(String bookName : addressbook.keySet())
+        {
+            addressbook.get(bookName);
+            contactlist.stream().filter(value -> value.getCity().equals(city)).map(Contact::getFirstname).forEach(System.out::println);
+        }
     }
     public void displayList() 
     {

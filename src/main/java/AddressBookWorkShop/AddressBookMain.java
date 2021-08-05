@@ -1,6 +1,5 @@
 package AddressBookWorkShop;
 
-
 import java.util.Scanner;
 
 public class AddressBookMain 
@@ -13,7 +12,7 @@ public class AddressBookMain
         while (!isExit)
         {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4.Display Contact. \n 5. Exit");
+            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4. Search City.\n 5.Display Contact. \n 6. Exit");
             int userInput = scanner.nextInt();
             switch (userInput)
             {
@@ -27,11 +26,14 @@ public class AddressBookMain
                     System.out.println("Enter the Name of the Person do you Wants to Delete:");
                     String personName = scanner.next();
                     service.deleteContact(personName);
-                
-                case 4:
+                 case 4:
+                	 System.out.println("Enter the city to be Searched:");
+                	 String searchCity = scanner.next();
+                	 service.searchaPersoninaCity(searchCity);
+                 case 5:
                     service.displayList();
                     break;
-                case 5:
+                 case 6:
                     isExit = true;
                     break;
                 default:

@@ -29,23 +29,23 @@ public class Contact
 	{
 		return firstname;
 	}
-	public void setFirstname(String firstname)
+	public void setFirstname(String firstname) //first name.
 	{
 		this.firstname = firstname;
 	}
-	public String getLastname()
+	public String getLastname() 
 	{
 		return lastname;
 	}
-	public void setLastname(String lastname)
+	public void setLastname(String lastname)//last name.
 	{
 		this.lastname = lastname;
 	}
-	public String getAddress()
+	public String getAddress() 
 	{
 		return address;
 	}
-	public void setAddress(String address) 
+	public void setAddress(String address)//address
 	{
 		this.address = address;
 	}
@@ -53,7 +53,7 @@ public class Contact
 	{
 		return city;
 	}
-	public void setCity(String city)
+	public void setCity(String city)//city.
 	{
 		this.city = city;
 	}
@@ -61,7 +61,7 @@ public class Contact
 	{
 		return state;
 	}
-	public void setState(String state)
+	public void setState(String state) //state.
 	{
 		this.state = state;
 	}
@@ -69,22 +69,23 @@ public class Contact
 	{
 		return phonenumber;
 	}
-	public void setPhonenumber(String phonenumber)
+	public void setPhonenumber(String phonenumber)//phone number.
 	{
 		this.phonenumber = phonenumber;
 	}
-	public String getEmailid() 
+	public String getEmailid()
 	{
 		return emailid;
 	}
-	public void setEmailid(String emailid) {
+	public void setEmailid(String emailid)//emailid.
+	{
 		this.emailid = emailid;
 	}
-	public long getZipcode()
+	public long getZipcode() 
 	{
 		return zipcode;
 	}
-	public void setZipcode(long zipcode)
+	public void setZipcode(long zipcode)//zipcode.
 	{
 		this.zipcode = zipcode;
 	}
