@@ -13,8 +13,9 @@ public class AddressBookMain
         while (!isExit)
         {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4.Search City.\n 5.search State.\n 6.view City.\n 7.view State.\n 8.Sort ByName.\n 9.Sort ByCity."
-            		              + " \n 10.reada file.\n11.writeafile.\n 12.Display Contact.\n 13.Exit.");
+            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4.Search City.\n 5.search State."
+            		+ "\n 6.view City.\n 7.view State.\n 8.Sort ByName.\n 9.Sort ByCity. \n 10.reada file.\n11.writeafile."
+            		+ "\n12.Write To csv.\n 13.read from csv.\n 14.Display Contact.\n 15.Exit.");
             int userInput = scanner.nextInt();
             switch (userInput)
             {
@@ -57,11 +58,18 @@ public class AddressBookMain
                      service.readDataFromFile();
                      break;
                  case 11:
-                     service.writeToFile();	 
+                     service.writeToFile();
+                     break;
                  case 12:
+                	 service.writeToCsv();
+                     break;
+                 case 13:
+                	 service.readFromCsvFile();
+                     break;
+                case 14:
                     service.displayList();
                     break;
-                 case 13:
+                 case 15:
                     isExit = true;
                     break;
                 default:
