@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -453,5 +454,21 @@ public class AddressBook
         }
         System.out.println(addressBookFile);
         return addressBookFile;
+    }
+    public List<Contact> readData(LocalDate start, LocalDate end) throws AddressBookException {
+        String query = null;
+        if (start != null)
+            query = String.format("select * from address_book where Date between '%s' and '%s';", start, end);
+        if (start == null)
+            query = "select * from address_book";
+        List<Contact> addressBookList = new ArrayList<>();
+        try (Connection con = addressBookConnection.getConnection()) {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            addressBookList = this.getAddressBookData(rs);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+        return addressBookList;
     }
 }
