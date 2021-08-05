@@ -1,12 +1,15 @@
 package AddressBookWorkShop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBook
 {
     static Scanner scanner = new Scanner(System.in);
     ArrayList<Contact> contactlist = new ArrayList<>();
+    private Map<String, ArrayList<Contact>> AddressBookMain = new HashMap<>();
 
     public void addNewContact()
     {
@@ -35,9 +38,22 @@ public class AddressBook
 
         System.out.println("Enter Email:");
         contact.setEmailid(scanner.next());
-
-        contactlist.add(contact);
-        System.out.println("Contact Added Successfully");
+        
+        System.out.println("Enter Book name to which you have to add contact");
+        String bookName  = scanner.next();
+        if(AddressBookMain.containsKey(bookName))
+        {
+            ArrayList<Contact> contactList = AddressBookMain.get(bookName);
+            contactList.add(contact);
+            AddressBookMain.put(bookName,contactList);
+            System.out.println("New Contact Has Been Added Successfully");
+        }
+        else
+        {
+            contactlist.add(contact);
+            AddressBookMain.put(bookName,contactlist);
+            System.out.println("New AddressBook is created and Added Contact in the AddressBook Successfully");
+        }
     }
     public void editContact()
     {
