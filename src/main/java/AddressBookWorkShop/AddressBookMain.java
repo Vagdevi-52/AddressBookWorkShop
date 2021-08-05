@@ -13,7 +13,7 @@ public class AddressBookMain
         while (!isExit)
         {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4.Search City.\n 5.search State.\n 6.view City.\n 7.view State.\n 8.Sort ByName.\n 9.Display Contact.\n 10.Exit.");
+            System.out.println("Enter options \n 1.Add Contact.\n 2.Edit Contact.\n 3.Delete Contact.\n 4.Search City.\n 5.search State.\n 6.view City.\n 7.view State.\n 8.Sort ByName.\n 9.Sort ByCity.\n 10.Display Contact.\n 11.Exit.");
             int userInput = scanner.nextInt();
             switch (userInput)
             {
@@ -49,9 +49,14 @@ public class AddressBookMain
                 	 service.sortByName();
                 	 break;
                  case 9:
+                	 System.out.println("Enter the State of a person to be viewed:");
+               	     String SortByCity =  scanner.next();
+                	 service.sortByCity();
+                	 
+                 case 10:
                     service.displayList();
                     break;
-                 case 10:
+                 case 11:
                     isExit = true;
                     break;
                 default:

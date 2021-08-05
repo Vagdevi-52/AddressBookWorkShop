@@ -175,10 +175,20 @@ public class AddressBook
         }
     }
     
-    public void sortByName() {
+    public void sortByName()
+    {
         addressbook.keySet().forEach((String name) -> {
             addressbook.get(name).stream().sorted(Comparator.comparing(Contact::getFirstname))
                     .collect(Collectors.toList()).forEach(person -> System.out.println(person.toString()));
+        });
+    }
+    
+    public void sortByCity() {
+        addressbook.keySet().forEach((String key) -> {
+            addressbook.get(key).stream()
+                    .sorted(Comparator.comparing(Contact::getCity))
+                    .collect(Collectors.toList())
+                    .forEach(person -> System.out.println(person.toString()));
         });
     }
 
