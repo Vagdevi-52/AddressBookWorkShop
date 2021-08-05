@@ -1,5 +1,6 @@
 package AddressBookWorkShop;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -134,6 +135,18 @@ public class AddressBook
         {
             addressbook.get(bookName);
             contactlist.stream().filter(value -> value.getCity().equals(city)).map(Contact::getFirstname).forEach(System.out::println);
+        }
+    }
+    
+    public void viewPersonInACity (String city)
+    {
+        for(String bookName : addressbook.keySet())
+        {
+            int countofPerson = 0;
+            addressbook.get(bookName);
+            contactlist.stream().filter(value -> value.getCity().equals(city)).map(Contact::getFirstname).forEach(System.out::println);
+            countofPerson++;
+            System.out.println("total no.of.persons:"+countofPerson);
         }
     }
     public void displayList() 
