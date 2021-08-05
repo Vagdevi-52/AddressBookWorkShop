@@ -1,6 +1,10 @@
 package AddressBookWorkShop;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -8,11 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collector;
+
+import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -297,5 +304,65 @@ public class AddressBook
         {
             e.printStackTrace();
         }
+    }
+    
+    public void writeToJson()
+    {
+        List<Contact> contacts = getContentOfCsv();
+        Gson gson = new Gson();
+        String json = gson.toJson(contacts);
+        try
+        {
+            FileWriter writer = new FileWriter(FILE_PATH+CSV_FILE);
+            writer.write(json);
+            writer.close();
+            System.out.println("Written sucessfully");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void readFromJson()
+    {
+        try
+        {
+            Gson gson = new Gson();
+            BufferedReader br = new BufferedReader(new FileReader(FILE_PATH+CSV_FILE));
+            Contact[] contacts = gson.fromJson(br,Contact[].class);
+            List<Contact> contactsList = Arrays.asList(contacts);
+            for(Contact contact: contactlist) {
+                System.out.println("Name : " + contact.getFirstname()+" "+contact.getLastname());
+                System.out.println("Email : " + contact.getEmailid());
+                System.out.println("PhoneNo : " + contact.getPhonenumber());
+                System.out.println("Address : " + contact.getAddress());
+                System.out.println("State : " + contact.getState());
+                System.out.println("City : " + contact.getCity());
+                System.out.println("Zip : " + contact.getZipcode());
+                System.out.println("==========================");
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    private List<Contact> getContentOfCsv()
+    {
+        try
+        {
+            Reader reader = Files.newBufferedReader(Paths.get(FILE_PATH+CSV_FILE));
+            CsvToBean<Contact> csvToBean = new CsvToBeanBuilder<Contact>(reader)
+                    .withType(Contact.class)
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+            return csvToBean.parse();
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
