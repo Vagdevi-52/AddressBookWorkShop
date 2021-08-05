@@ -1,6 +1,8 @@
 package AddressBookWorkShop;
 
+
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public class AddressBookJDBC {
@@ -9,6 +11,7 @@ public class AddressBookJDBC {
     }
 
     private List<Contact> addressBookList;
+	private Object addressBookFile;
     private static AddressBook addressBookDBService;
 
     public AddressBookJDBC() {
@@ -69,5 +72,26 @@ public class AddressBookJDBC {
         } catch (AddressBookException e) {
             throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
+    }
+    
+    private Contact getAddressBookData1(String firstname) {
+        return ((Collection<Contact>) this.addressBookFile).stream().filter(addressBookItem -> addressBookItem.getFirstname().equals(firstname))
+                .findFirst().orElse(null);
+    }
+    
+    public List<Contact> readAddressBookData1(IOService ioService, String start, String end)
+            throws AddressBookException {
+        try {
+            LocalDate startLocalDate = LocalDate.parse(start);
+            LocalDate endLocalDate = LocalDate.parse(end);
+            if (ioService.equals(IOService.DB_IO))
+                return addressBookDBService.readData(startLocalDate, endLocalDate);
+            return this.addressBookList;
+        } catch (AddressBookException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+    }
+    public int readAddressBookData(String function, String city) throws AddressBookException {
+        return addressBookDBService.readDataBasedOnCity(function, city);
     }
 }

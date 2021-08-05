@@ -1,6 +1,5 @@
 package AddressBookWorkShop;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -446,7 +445,7 @@ public class AddressBook
         if (this.contact == null)
             this.prepareAddressBookStatement();
         try {
-            ((PreparedStatement) contact).setString(1, firstname);
+            ((java.sql.PreparedStatement) contact).setString(1, firstname);
             ResultSet resultSet = ((java.sql.PreparedStatement) contact).executeQuery();
             addressBookFile = this.getAddressBookData(resultSet);
         } catch (SQLException e) {
@@ -454,6 +453,11 @@ public class AddressBook
         }
         System.out.println(addressBookFile);
         return addressBookFile;
+    }
+    
+    private Contact getAddressBookData1(String firstname) {
+        return this.addressBookFile.stream().filter(addressBookItem -> addressBookItem.getFirstName().equals(firstname))
+                .findFirst().orElse(null);
     }
     public List<Contact> readData(LocalDate start, LocalDate end) throws AddressBookException {
         String query = null;
