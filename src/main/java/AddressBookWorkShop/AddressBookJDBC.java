@@ -30,4 +30,31 @@ public class AddressBookJDBC {
 			}
         return this.addressBookList;
     }
+    
+    public void updateRecord(String firstname, String address) throws AddressBookException {
+        int result = addressBookDBService.updateAddressBookData(firstname, address);
+        if (result == 0)
+            return;
+        Contact addressBookData = this.getAddressBookData(firstname);
+        if (addressBookData != null)
+            addressBookData.setAddress(address);
+    }
+
+    public boolean checkUpdatedRecordSyncWithDatabase(String firstname) throws AddressBookException {
+        try {
+            List<Contact> addressBookData = addressBookDBService.getAddressBookDataUsingDB(firstname);
+            return addressBookData.get(0).equals(getAddressBookData(firstname));
+        } catch (AddressBookException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+    }
+
+    private Contact getAddressBookData(String firstname) {
+        for (Contact addressBookItem : addressBookList) {
+            if (addressBookItem.getFirstname().equals(firstname)) {
+                return addressBookItem;
+            }
+        }
+        return null;
+    }
 }

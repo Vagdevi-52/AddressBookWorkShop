@@ -25,6 +25,7 @@ import java.util.Scanner;
 import java.util.stream.Collector;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.PreparedStatement;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -38,7 +39,7 @@ public class AddressBook
     ArrayList<Contact> contactlist = new ArrayList<>();
     public static String addressBookFile1 = "AddressBookFile.txt";
     public static final String FILE_PATH="C:\\Users\\nithinkrishna\\Desktop";
-    public static String addressBookFile = "AddressBookFile.txt";
+    public static List<Contact> addressBookFile = "AddressBookFile.txt";
     public static final String CSV_FILE="/addressBook.csv";
 	private Object contact;
 	private Object bookName;
@@ -387,7 +388,7 @@ public class AddressBook
         return this.getAddressBookDataUsingDB(sql);
     }
 
-    private List<Contact> getAddressBookDataUsingDB(String sql) throws AddressBookException {
+    List<Contact> getAddressBookDataUsingDB(String sql) throws AddressBookException {
         List<Contact> addressBookList = new ArrayList<>();
         try (Connection connection = AddressBookConnection.getConnection();) {
             Statement statement = connection.createStatement();
@@ -417,5 +418,40 @@ public class AddressBook
             throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
         }
         return addressBookList;
+    }
+    
+    AddressBookConnection addressBookConnection = new AddressBookConnection();
+    private void prepareAddressBookStatement() throws AddressBookException {
+        try {
+            Connection connection = AddressBookConnection.getConnection();
+            String query = "select * from address_book where FirstName = ?";
+            contact = connection.prepareStatement(query);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+    }
+    public int updateAddressBookData(String firstname, String address) throws AddressBookException {
+        String query = String.format("update address_book set Address = '%s' where FirstName = '%s';", address,
+                firstname);
+        try (Connection connection = addressBookConnection.getConnection()) {
+            PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+            return preparedStatement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.CONNECTION_FAILED);
+        }
+    }
+
+    public List<Contact> getAddressBookData(String firstname) throws AddressBookException {
+        if (this.contact == null)
+            this.prepareAddressBookStatement();
+        try {
+            ((PreparedStatement) contact).setString(1, firstname);
+            ResultSet resultSet = ((java.sql.PreparedStatement) contact).executeQuery();
+            addressBookFile = this.getAddressBookData(resultSet);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.CONNECTION_FAILED);
+        }
+        System.out.println(addressBookFile);
+        return addressBookFile;
     }
 }
