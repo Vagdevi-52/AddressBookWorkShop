@@ -1,6 +1,5 @@
 package AddressBookWorkShop;
 
-
 public class Contact 
 {
 	
@@ -42,15 +41,16 @@ public class Contact
 	{
 		this.lastname = lastname;
 	}
-	public String getAddress() 
+	public String getAddress()
 	{
 		return address;
 	}
-	public void setAddress(String address)
+	public void setAddress(String address) 
 	{
 		this.address = address;
 	}
-	public String getCity() {
+	public String getCity() 
+	{
 		return city;
 	}
 	public void setCity(String city)
@@ -73,15 +73,14 @@ public class Contact
 	{
 		this.phonenumber = phonenumber;
 	}
-	public String getEmailid()
+	public String getEmailid() 
 	{
 		return emailid;
 	}
-	public void setEmailid(String emailid)
-	{
+	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
-	public long getZipcode() 
+	public long getZipcode()
 	{
 		return zipcode;
 	}
