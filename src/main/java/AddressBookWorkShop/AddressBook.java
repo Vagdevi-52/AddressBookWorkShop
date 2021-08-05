@@ -39,7 +39,7 @@ public class AddressBook
     ArrayList<Contact> contactlist = new ArrayList<>();
     public static String addressBookFile1 = "AddressBookFile.txt";
     public static final String FILE_PATH="C:\\Users\\nithinkrishna\\Desktop";
-    public static List<Contact> addressBookFile = "AddressBookFile.txt";
+    public static String addressBookFile = "AddressBookFile.txt";
     public static final String CSV_FILE="/addressBook.csv";
 	private Object contact;
 	private Object bookName;
@@ -434,7 +434,7 @@ public class AddressBook
         String query = String.format("update address_book set Address = '%s' where FirstName = '%s';", address,
                 firstname);
         try (Connection connection = addressBookConnection.getConnection()) {
-            PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+            java.sql.PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
             return preparedStatement.executeUpdate(query);
         } catch (SQLException e) {
             throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.CONNECTION_FAILED);
@@ -455,10 +455,6 @@ public class AddressBook
         return addressBookFile;
     }
     
-    private Contact getAddressBookData1(String firstname) {
-        return this.addressBookFile.stream().filter(addressBookItem -> addressBookItem.getFirstName().equals(firstname))
-                .findFirst().orElse(null);
-    }
     public List<Contact> readData(LocalDate start, LocalDate end) throws AddressBookException {
         String query = null;
         if (start != null)
@@ -475,4 +471,38 @@ public class AddressBook
         }
         return addressBookList;
     }
+    
+    public int readDataBasedOnCity(String total, String city) throws AddressBookException {
+        int count = 0;
+        String query = String.format("select %s(state) from address_book where city = '%s' group by city;", total, city);
+        try (Connection connection = addressBookConnection.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            resultSet.next();
+            count = resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+        }
+        return count;
+    }
+    public Contact addNewContact(String firstName, String lastName, String address, String city, String state,
+            String zip, String phoneNo, String email,String AddressBookType, String date) throws AddressBookException {
+		int id = -1;
+		Contact addressBookData = null;
+		String query = String.format("INSERT INTO address_book(FirstName, LastName, Address, City, State, Zip, Phone, Email, AddressBookType,Date) values ('%s','%s,'%s','%s','%s','%s','%s','%s','%s','%s');",
+		firstName, lastName, address, city, state, zip, phoneNo, email,AddressBookType, date);
+		try (Connection connection = addressBookConnection.getConnection()) {
+		Statement statement = connection.createStatement();
+		int rowChanged = statement.executeUpdate(query, statement.RETURN_GENERATED_KEYS);
+		if (rowChanged == 1) {
+		ResultSet resultSet = statement.getGeneratedKeys();
+		if (resultSet.next())
+		id = resultSet.getInt(1);
+		}
+		addressBookData = new Contact();
+		} catch (SQLException e) {
+		throw new AddressBookException(e.getMessage(), AddressBookException.ExceptionType.DATABASE_EXCEPTION);
+		}
+		return addressBookData;
+		}
 }
