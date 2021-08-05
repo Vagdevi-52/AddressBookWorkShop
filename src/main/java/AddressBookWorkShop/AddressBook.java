@@ -1,6 +1,12 @@
 package AddressBookWorkShop;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,7 +18,7 @@ public class AddressBook
 {
 	static Scanner scanner = new Scanner(System.in);
     ArrayList<Contact> contactlist = new ArrayList<>();
-    private Map<String, ArrayList<Contact>> addressbook = new HashMap<>();
+    public static String addressBookFile = "AddressBookFile.txt";
 	private Object contact;
 	private Object bookName;
 
@@ -46,7 +52,7 @@ public class AddressBook
         
         System.out.println("Enter Book name to which you have to add contact");
         String bookName  = scanner.next();
-        if(addressbook.containsKey(bookName))
+        if(addressBookFile.containsKey(bookName))
         {
         	    contactlist.stream().filter(value -> value.getFirstname(). equals(contact.getFirstname())).forEach(value -> 
         	    {
@@ -54,14 +60,41 @@ public class AddressBook
         	    	addNewContact();
         	    });
         	contactlist.add(contact);
-            addressbook.put(bookName,contactlist);
+            addressBookFile.put(bookName,contactlist);
             System.out.println("New Contact Has Been Added Successfully");
         }
         else
         {
             contactlist.add(contact);
-            addressbook.put(bookName,contactlist);
+            addressBookFile.put(bookName,contactlist);
             System.out.println("New AddressBook is created and Added Contact in the AddressBook Successfully");
+        }
+    }
+    
+    public void writeToFile()
+    {
+        StringBuffer addressBuffer = new StringBuffer();
+        contactlist.forEach(address -> { String addressDataString = address.toString().concat("\n");addressBuffer.append(addressDataString);});
+        try
+        {
+            Files.write(Paths.get(addressBookFile),addressBuffer.toString().getBytes(StandardCharsets.UTF_8));
+            System.out.println("Data successfully written to file.");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void readDataFromFile()
+    {
+        try
+        {
+            System.out.println("Reading Data From File :");
+            Files.lines(new File(addressBookFile).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
     public void editContact()
@@ -134,9 +167,9 @@ public class AddressBook
     public void searchaPersoninaCity (String city)
     {
         System.out.println("following are the persons who belongs to :" + city);
-        for(String bookName : addressbook.keySet())
+        for(String bookName : addressBookFile.keySet())
         {
-            addressbook.get(bookName);
+            addressBookFile.get(bookName);
             contactlist.stream().filter(value -> value.getCity().equals(city)).map(Contact::getFirstname).forEach(System.out::println);
         }
     }
@@ -144,19 +177,19 @@ public class AddressBook
     public void searchaPersoninaState (String state)
     {
         System.out.println("following are the persons who belongs to :" + state);
-        for(String bookName : addressbook.keySet())
+        for(String bookName : addressBookFile.keySet())
         {
-            addressbook.get(bookName);
+            addressBookFile.get(bookName);
             contactlist.stream().filter(value -> value.getState().equals(state)).map(Contact::getFirstname).forEach(System.out::println);
         }
     }
     
     public void viewPersonInACity (String city)
     {
-        for(String bookName : addressbook.keySet())
+        for(String bookName : addressBookFile.keySet())
         {
             int countofPerson = 0;
-            addressbook.get(bookName);
+            addressBookFile.get(bookName);
             contactlist.stream().filter(value -> value.getCity().equals(city)).map(Contact::getFirstname).forEach(System.out::println);
             countofPerson++;
             System.out.println("total no.of.persons: " +countofPerson);
@@ -165,10 +198,10 @@ public class AddressBook
     
     public void viewPersonInAState (String state)
     {
-        for(String bookName : addressbook.keySet())
+        for(String bookName : addressBookFile.keySet())
         {
             int countofPerson = 0;
-            addressbook.get(bookName);
+            addressBookFile.get(bookName);
             contactlist.stream().filter(value -> value.getState().equals(state)).map(Contact::getFirstname).forEach(System.out::println);
             countofPerson++;
             System.out.println("total no.of.persons: " +countofPerson );
@@ -177,14 +210,14 @@ public class AddressBook
     
     public void sortByName()
     {
-        addressbook.keySet().forEach((String name) -> {
+        addressBookFile.keySet().forEach((String name) -> {
             addressbook.get(name).stream().sorted(Comparator.comparing(Contact::getFirstname))
                     .collect(Collectors.toList()).forEach(person -> System.out.println(person.toString()));
         });
     }
     
     public void sortByCity() {
-        addressbook.keySet().forEach((String key) -> {
+        addressBookFile.keySet().forEach((String key) -> {
             addressbook.get(key).stream()
                     .sorted(Comparator.comparing(Contact::getCity))
                     .collect(Collectors.toList())
@@ -196,5 +229,4 @@ public class AddressBook
     {
         for (Contact iterator : contactlist) System.out.println(iterator);
     }
-
 }
